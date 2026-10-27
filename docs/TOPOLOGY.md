@@ -32,7 +32,7 @@ flowchart TD
 | SW2 Fa0/5–6 | Warehouse PCs | VLAN30 |
 | SW2 Fa0/7 | Admin-01 | VLAN60 |
 | SW1 Fa0/9–24 | Unused | Disabled |
-| SW2 Fa0/8–24 | Unused | Shutdown in observed export |
+| SW2 Fa0/8–24 | Unused | Disabled |
 | SW2 G0/2 | Intended unused | Disabled during cleanup |
 
 Fresh-build templates explicitly create all six VLANs on both switches. VLAN60 keeps the historical name ADMIN. No redundant links or routing protocol have been added.

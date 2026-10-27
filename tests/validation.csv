@@ -1,27 +1,27 @@
 ID,Source,Action,Expected,Actual,Status,Evidence,Notes
-T01,POS PC,Renew DHCP,192.168.10.x/24; GW .10.1; DNS .40.10,,NOT RETESTED,,
-T02,Office PC,Renew DHCP,192.168.20.x/24; GW .20.1; DNS .40.10,,NOT RETESTED,,
-T03,Both Warehouse PCs,Renew DHCP,192.168.30.x/24; GW .30.1; DNS .40.10,,NOT RETESTED,,
-T04,Both Guest clients,Renew DHCP,192.168.50.x/24; GW .50.1; DNS 198.51.100.10,,NOT RETESTED,,
-T05,POS PC,HTTP http://portal.retail.test,PASS,,NOT RETESTED,,
-T06,Warehouse PC,HTTP http://portal.retail.test,PASS,,NOT RETESTED,,
-T07,Office PC,HTTP http://portal.retail.test,PASS,,NOT RETESTED,,
-T08,POS and Warehouse,Ping own gateway,PASS,,NOT RETESTED,,
-T09,POS and Warehouse,Ping 192.168.40.10,BLOCKED by intended protocol restrictions,,NOT RETESTED,,
-T10,POS and Warehouse,Ping 192.168.20.10,BLOCKED,,NOT RETESTED,,
-T11,POS and Warehouse,HTTP http://198.51.100.10,BLOCKED,,NOT RETESTED,,
-T12,Office PC,Ping 192.168.20.10,PASS,,NOT RETESTED,,
-T13,Admin-01,Ping 192.168.20.10,PASS,,NOT RETESTED,,
-T14,Office PC and Guest client,HTTP http://www.public.test,PASS from each,,NOT RETESTED,,
-T15,Guest client,Ping 192.168.50.1,PASS,,NOT RETESTED,,
-T16,Guest client,HTTP http://192.168.40.10,BLOCKED,,NOT RETESTED,,
-T17,Guest client,Ping 192.168.60.10 and 192.168.20.10,BLOCKED,,NOT RETESTED,,
-T18,Admin-01,New SSH to .60.1 / .60.2 / .60.3,PASS on all; record privilege prompt,,NOT RETESTED,,
-T19,Office PC,New SSH to .60.1 / .60.2 / .60.3,BLOCKED on all,,NOT RETESTED,,
-T20,Admin-01,Ping actual current POS and Warehouse IPs,PASS,,NOT RETESTED,,
-T21,SW1 and SW2,show interfaces trunk; show vlan brief,Correct port map; VLANs active; trunk list correct,,NOT RETESTED,,
-T22,SW1 and SW2,show port-security; show interfaces status,Expected MACs learned; used ports up; unused ports disabled,,NOT RETESTED,,
-T23,R1,show ip nat translations after Office + Guest HTTP,Both use inside global 203.0.113.2; differentiated ports,,NOT RETESTED,,
-T24,POS Fa0/1,Controlled different-MAC violation then restore original,Secure-shutdown followed by recovered Secure-up and connectivity,,NOT RETESTED,,
-T25,Saved .pkt,Reopen copy and repeat T05/T06/T14/T18/T19,Representative services and access policy persist,,NOT RETESTED,,
-T26,Separate exercise copy,Missing VLAN30 trunk fault and restore,Diagnosed; connectivity restored; record evidence,,NOT RETESTED,,
+T01,POS PC,Renew DHCP,192.168.10.x/24; GW .10.1; DNS .40.10,Received POS subnet with correct gateway and DNS,PASS,,Manual verification confirmed by Eyad
+T02,Office PC,Renew DHCP,192.168.20.x/24; GW .20.1; DNS .40.10,Received Office subnet with correct gateway and DNS,PASS,,Manual verification confirmed by Eyad
+T03,Both Warehouse PCs,Renew DHCP,192.168.30.x/24; GW .30.1; DNS .40.10,Both Warehouse clients received correct addressing and DNS,PASS,,Manual verification confirmed by Eyad
+T04,Both Guest clients,Renew DHCP,192.168.50.x/24; GW .50.1; DNS 198.51.100.10,Both Guest clients received correct addressing and external DNS,PASS,,Manual verification confirmed by Eyad
+T05,POS PC,HTTP http://portal.retail.test,PASS,Internal portal opened by name,PASS,,Manual verification confirmed by Eyad
+T06,Warehouse PC,HTTP http://portal.retail.test,PASS,Internal portal opened by name,PASS,,Manual verification confirmed by Eyad
+T07,Office PC,HTTP http://portal.retail.test,PASS,Internal portal opened by name,PASS,evidence/internal-portal-office.png,Manual verification confirmed by Eyad
+T08,POS and Warehouse,Ping own gateway,PASS,Own gateway reachable from both departments,PASS,,Manual verification confirmed by Eyad
+T09,POS and Warehouse,Ping 192.168.40.10,BLOCKED by intended protocol restrictions,Server ping blocked as intended,PASS,,Manual verification confirmed by Eyad
+T10,POS and Warehouse,Ping 192.168.20.10,BLOCKED,Printer ping blocked as intended,PASS,,Manual verification confirmed by Eyad
+T11,POS and Warehouse,HTTP http://198.51.100.10,BLOCKED,External HTTP blocked as intended,PASS,,Manual verification confirmed by Eyad
+T12,Office PC,Ping 192.168.20.10,PASS,Printer reachable,PASS,,Manual verification confirmed by Eyad
+T13,Admin-01,Ping 192.168.20.10,PASS,Printer reachable,PASS,,Manual verification confirmed by Eyad
+T14,Office PC and Guest client,HTTP http://www.public.test,PASS from each,External site opened by name from both sources,PASS,evidence/guest-public-web-by-name.png,Manual verification confirmed by Eyad
+T15,Guest client,Ping 192.168.50.1,PASS,Guest gateway reachable,PASS,evidence/guest-internal-access-blocked.png,Manual verification confirmed by Eyad
+T16,Guest client,HTTP http://192.168.40.10,BLOCKED,Internal HTTP blocked as intended,PASS,,Manual verification confirmed by Eyad
+T17,Guest client,Ping 192.168.60.10 and 192.168.20.10,BLOCKED,Both private destinations blocked,PASS,evidence/guest-internal-access-blocked.png,Manual verification confirmed by Eyad
+T18,Admin-01,New SSH to .60.1 / .60.2 / .60.3,PASS on all; record privilege prompt,SSH login successful on all three store devices,PASS,,Manual verification confirmed by Eyad
+T19,Office PC,New SSH to .60.1 / .60.2 / .60.3,BLOCKED on all,SSH connection rejected on all three store devices,PASS,evidence/office-ssh-denied.png,Manual verification confirmed by Eyad
+T20,Admin-01,Ping actual current POS and Warehouse IPs,PASS,Both endpoints reachable from Admin-01,PASS,,Manual verification confirmed by Eyad
+T21,SW1 and SW2,show interfaces trunk; show vlan brief,Correct port map; VLANs active; trunk list correct,VLAN membership and trunk lists matched the design,PASS,,Manual verification confirmed by Eyad
+T22,SW1 and SW2,show port-security; show interfaces status,Expected MACs learned; used ports up; unused ports disabled,Intended MACs learned and used/unused port states matched the design,PASS,,Manual verification confirmed by Eyad
+T23,R1,show ip nat translations after Office + Guest HTTP,Both use inside global 203.0.113.2; differentiated ports,Office and Guest traffic shared 203.0.113.2 using distinct ports,PASS,evidence/pat-office-and-guests.png,Manual verification confirmed by Eyad
+T24,POS Fa0/1,Controlled different-MAC violation then restore original,Secure-shutdown followed by recovered Secure-up and connectivity,Violation shut down the port; original endpoint connectivity recovered,PASS,evidence/port-security-violation.png,Manual verification confirmed by Eyad
+T25,Saved .pkt,Reopen copy and repeat T05/T06/T14/T18/T19,Representative services and access policy persist,Saved project reopened and representative tests passed,PASS,,Manual verification confirmed by Eyad
+T26,Separate exercise copy,Missing VLAN30 trunk fault and restore,Diagnosed; connectivity restored; record evidence,VLAN30 trunk fault diagnosed and connectivity restored,PASS,,Manual verification confirmed by Eyad

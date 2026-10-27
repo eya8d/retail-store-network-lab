@@ -20,4 +20,4 @@ The useful story is the retail requirement, what I configured, and a problem I h
 
 The first release should attach `Retail-Store-Network.pkt` so someone can download the lab directly. The [release notes](RELEASE-NOTES.md) describe the current scope.
 
-I still want to add the exact Packet Tracer version and fresh configuration exports after cleanup.
+The cleaned configuration files and completed manual test results are included. I still want to record the exact Packet Tracer version.

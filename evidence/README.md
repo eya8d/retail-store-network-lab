@@ -17,4 +17,4 @@ Start with [the full topology](../docs/topology.png).
 | [SW2 summary](sw2-port-security-summary.png) | Six addresses learned at that point; Admin-01 hadn't sent traffic yet |
 | [Warehouse DNS issue](warehouse-dhcp-name-incident.png) | Similar pool names split across separate DHCP entries |
 
-The later SW2 export contains Admin-01's sticky MAC too. After cleanup I repeated the Warehouse portal and Guest allow/block checks. I haven't captured a replacement screenshot for every test in the checklist.
+The SW2 configuration includes Admin-01's sticky MAC too. All 26 manual checks were completed successfully after cleanup; the screenshots here show selected checks from the build. See [the results](../tests/validation.csv) for the complete checklist.

@@ -65,13 +65,13 @@ I've kept the [troubleshooting notes](docs/TROUBLESHOOTING.md) and [screenshots]
 | Office → store device SSH | Blocked |
 | Different MAC on secured POS port | Port shuts down |
 
-The screenshots cover the tests I captured during the build. After the cleanup I also repeated Warehouse portal access, Guest external browsing and Guest access blocking. The [test checklist](tests/validation.csv) is there for a full repeat run; I haven't filled every row.
+I completed all 26 checks in the [test results](tests/validation.csv). They passed, including the tests where traffic was supposed to be blocked. The screenshots show selected checks and troubleshooting steps.
 
 A failed ping to the internal server from POS or Warehouse is expected: their ACLs allow DNS and HTTP, not ICMP echo to the server.
 
 ## Finding your way around
 
-- [configs/observed/](configs/observed/) — my earlier configuration exports, with password hashes removed.
+- [configs/observed/](configs/observed/) — my lab configurations with the final cleanup and password hashes removed.
 - [configs/build/](configs/build/) — cleaned configurations for rebuilding on fresh devices. These include extra management settings; see the [configuration notes](configs/README.md) before using them.
 - [docs/](docs/) — addressing, topology, access rules and rebuild notes.
 - [evidence/](evidence/) — screenshots of services, ACL tests, PAT and port security.

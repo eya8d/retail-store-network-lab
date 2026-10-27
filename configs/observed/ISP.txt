@@ -1,7 +1,6 @@
-! Sanitized observed export from user-supplied running-config.
-! Blank lines and repeated separators normalized; CLI prompts/errors removed.
-! Credential hashes and serial/license identifiers omitted.
-! Not a complete fresh-device restore: see docs/REBUILD.md.
+! Lab configuration, updated with the cleanup confirmed by Eyad.
+! Password hashes and device serial identifiers omitted.
+! See docs/REBUILD.md for VLAN database and SSH key setup on fresh devices.
 version 15.1
 no service timestamps log datetime msec
 no service timestamps debug datetime msec

@@ -1,35 +1,33 @@
-# Cleanup notes
+# Final configuration review
 
-After the network was working, I went through the running configurations to remove leftovers from the build.
+I finished the cleanup and completed the manual test checklist.
 
-## Changes I made
+## Configuration checked
 
-On R1 I removed:
+- Each of the four DHCP pools has the correct network, gateway and DNS server.
+- The .1–.20 DHCP exclusions reserve infrastructure addresses.
+- POS, Warehouse and Guest ACLs are applied to their matching subinterfaces.
+- PAT selects Office and Guests and uses the WAN interface address.
+- SSH source ACL99 covers the configured VTY ranges on the store devices.
+- SW1's domain is `retail.test`.
+- Unused SW2 G0/2 is disabled.
+- Unused DHCP pools, empty ACLs and G0/0.200 are removed.
 
-- The extra DHCP exclusion running from `192.168.20.1` to `192.168.10.20`. The correct Office exclusion is `.20.1` through `.20.20`.
-- The DNS-only pools `WERAHOUSE` and `WAREHOUSES`. The working pool is `WEARHOUSE`.
-- The empty ACLs `WERHOUSE-INNN` and `WERHOUSE-IN`. The applied Warehouse ACL is `WAREHOUSE-IN`.
-- The unused `GigabitEthernet0/0.200` subinterface.
+The [observed configurations](../configs/observed/) include those cleanup changes. Password hashes and serial identifiers are omitted.
 
-I also corrected SW1's domain from `retial.test` to `retail.test` and shut down SW2's unused G0/2.
+## Rebuild notes
 
-Afterward, I checked Warehouse portal access, Guest access to the external site, and blocked Guest access to the internal server. Those checks passed.
+The switch VLAN database and SSH keys need attention when starting with fresh devices. The build files create the VLANs explicitly; RSA keys are generated on each store network device.
 
-## Things to remember when rebuilding
+Sticky MAC entries belong to the original endpoints. On a new topology, let port security learn the new endpoints.
 
-The earlier switch exports don't contain the VLAN creation commands. On a 2960, normal-range VLAN information can be stored in vlan.dat. I included explicit VLAN creation in the build files so a fresh switch has what it needs.
+The build files include additional full-admin, console-login and enable-secret settings. Check [LAB-CREDENTIALS.md](LAB-CREDENTIALS.md) for that version.
 
-Sticky MAC entries belong to the original endpoints. If you create new PCs, let the switch learn their MACs rather than pasting the old bindings.
+## Validation
 
-SSH keys also need to be generated on fresh devices.
+All 26 checks in [validation.csv](../tests/validation.csv) passed during manual testing confirmed by Eyad. Selected screenshots are listed in [the evidence index](../evidence/README.md).
 
-## Management settings
-
-The original router account has privilege 15, while the switch accounts don't set an explicit privilege. The build files use a single full-admin lab account, local console login and an enable secret. They also disable unused ISP remote login. Those extra settings are for the rebuild; I haven't confirmed them all in the uploaded simulation.
-
-The [observed exports](../configs/observed/) remain the earlier snapshots. I still need to replace them with a separate set of final exports after cleanup.
-
-## References I used for the notes
+## References
 
 - [Cisco 2960 VLAN configuration](https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-0_1_se/configuration/guide/scg2960/swvlan.html)
 - [Cisco IP access lists](https://www.cisco.com/c/en/us/support/docs/security/ios-firewall/23602-confaccesslists.html)

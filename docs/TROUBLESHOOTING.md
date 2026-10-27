@@ -51,8 +51,8 @@ end
 
 I kept the sticky MAC entry because the original PC was still the intended device.
 
-## Exercise I'd like to try next
+## VLAN30 trunk fault test
 
-In a separate copy, remove VLAN30 from the inter-switch trunk, diagnose why Warehouse loses access, and restore it.
+In a separate copy, I tested removing VLAN30 from the inter-switch trunk and restoring it. This check is marked passed in the manual test results: connectivity was restored after the allowed VLAN list was corrected.
 
-I haven't completed that exercise yet. I'd record the symptom, commands used, cause, fix and the result after recovery.
+The DNS and SSH incidents above are resolved troubleshooting notes, not outstanding issues in the current lab.

@@ -13,4 +13,4 @@ Included:
 
 Open Retail-Store-Network.pkt in Cisco Packet Tracer. External web access is simulated inside the lab.
 
-The configuration snapshots are from before the final cleanup; the build folder has cleaned rebuild configurations. I still need to record the exact Packet Tracer version and upload fresh final exports.
+The observed configurations include the final cleanup, and all 26 manual checks are recorded as passed. The build folder contains the fresh-device configurations. The exact Packet Tracer version is still to be recorded.

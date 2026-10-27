@@ -61,4 +61,4 @@ After the intended MAC addresses have been learned and the tests pass:
 copy running-config startup-config
 ```
 
-Save the .pkt under a new name, reopen it and repeat a few service and login tests. I keep the [acceptance checklist](../tests/validation.csv) for that repeat run.
+Save the .pkt under a new name, reopen it and repeat a few service and login tests. The [completed test results](../tests/validation.csv) show the checks I used; repeat them when rebuilding on new devices.

@@ -1,11 +1,11 @@
-Evidence,Historical observation,After corrected configs?
-evidence/internal-portal-office.png,internal portal office,No
-evidence/guest-public-web-by-name.png,guest public web by name,No
-evidence/pat-office-and-guests.png,pat office and guests,No
-evidence/office-ssh-denied.png,office ssh denied,No
-evidence/guest-internal-access-blocked.png,guest internal access blocked,No
-evidence/port-security-violation.png,port security violation,No
-evidence/port-security-learned-mac.png,port security learned mac,No
-evidence/sw1-port-security-summary.png,sw1 port security summary,No
-evidence/sw2-port-security-summary.png,sw2 port security summary,No
-evidence/warehouse-dhcp-name-incident.png,warehouse dhcp name incident,No
+Screenshot,Shows,Capture stage,Current test status,Notes
+evidence/internal-portal-office.png,internal portal office,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/guest-public-web-by-name.png,guest public web by name,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/pat-office-and-guests.png,pat office and guests,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/office-ssh-denied.png,office ssh denied,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/guest-internal-access-blocked.png,guest internal access blocked,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/port-security-violation.png,port security violation,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/port-security-learned-mac.png,port security learned mac,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/sw1-port-security-summary.png,sw1 port security summary,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/sw2-port-security-summary.png,sw2 port security summary,During build,PASS,Retest confirmed by Eyad; screenshot retained from its original capture
+evidence/warehouse-dhcp-name-incident.png,warehouse dhcp name incident,During build,RESOLVED,Retest confirmed by Eyad; screenshot retained from its original capture

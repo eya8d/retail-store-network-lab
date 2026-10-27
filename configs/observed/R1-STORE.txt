@@ -1,14 +1,12 @@
-! Sanitized observed export from user-supplied running-config.
-! Blank lines and repeated separators normalized; CLI prompts/errors removed.
-! Credential hashes and serial/license identifiers omitted.
-! Not a complete fresh-device restore: see docs/REBUILD.md.
+! Lab configuration, updated with the cleanup confirmed by Eyad.
+! Password hashes and device serial identifiers omitted.
+! See docs/REBUILD.md for VLAN database and SSH key setup on fresh devices.
 version 15.1
 no service timestamps log datetime msec
 no service timestamps debug datetime msec
 no service password-encryption
 hostname R1-STORE
 ip dhcp excluded-address 192.168.10.1 192.168.10.20
-ip dhcp excluded-address 192.168.20.1 192.168.10.20
 ip dhcp excluded-address 192.168.20.1 192.168.20.20
 ip dhcp excluded-address 192.168.30.1 192.168.30.20
 ip dhcp excluded-address 192.168.50.1 192.168.50.20
@@ -29,10 +27,6 @@ ip dhcp pool GUESTS
  network 192.168.50.0 255.255.255.0
  default-router 192.168.50.1
  dns-server 198.51.100.10
-ip dhcp pool WERAHOUSE
- dns-server 192.168.40.10
-ip dhcp pool WAREHOUSES
- dns-server 192.168.40.10
 !
 ip cef
 no ipv6 cef
@@ -74,8 +68,6 @@ interface GigabitEthernet0/0.60
  encapsulation dot1Q 60
  ip address 192.168.60.1 255.255.255.0
 !
-interface GigabitEthernet0/0.200
- no ip address
 !
 interface GigabitEthernet0/1
  ip address 203.0.113.2 255.255.255.252
@@ -117,8 +109,6 @@ ip access-list extended POS-IN
  permit tcp 192.168.10.0 0.0.0.255 host 192.168.40.10 eq www
  permit icmp 192.168.10.0 0.0.0.255 host 192.168.60.10 echo-reply
  deny ip any any
-ip access-list extended WERHOUSE-INNN
-ip access-list extended WERHOUSE-IN
 ip access-list extended WAREHOUSE-IN
  permit udp any eq bootpc any eq bootps
  permit icmp 192.168.30.0 0.0.0.255 host 192.168.30.1 echo

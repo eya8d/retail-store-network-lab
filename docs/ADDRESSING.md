@@ -11,7 +11,7 @@ All LAN masks: 255.255.255.0 (/24), with .0 network and .255 broadcast.
 | 50 | Guests | 192.168.50.0/24 | 192.168.50.1 | GUESTS pool, .21–.254; DNS 198.51.100.10 |
 | 60 | Network management | 192.168.60.0/24 | 192.168.60.1 | SW1 .2; SW2 .3; Admin-01 .10, static |
 
-The .21 start assumes the correct .1–.20 exclusions. I removed the malformed extra exclusion during cleanup; the earlier export still contains it. Warehouse spelling WEARHOUSE is retained to avoid creating another pool.
+DHCP excludes .1–.20 and starts dynamic allocation at .21. The working Warehouse pool keeps its original name, WEARHOUSE.
 
 | External segment | Device | Address |
 |---|---|---|
