@@ -1,0 +1,177 @@
+! Sanitized observed export from user-supplied running-config.
+! Blank lines and repeated separators normalized; CLI prompts/errors removed.
+! Credential hashes and serial/license identifiers omitted.
+! Not a complete fresh-device restore: see docs/REBUILD.md.
+version 15.0
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+hostname SW1-SALES
+ip ssh version 2
+ip domain-name retial.test
+! REDACTED: username netadmin secret 5 [hash omitted; no explicit privilege in source]
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+interface FastEthernet0/1
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0060.2F86.9235
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0003.E430.2409
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0030.A34E.BD75
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 00E0.F9A9.1ED2
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/5
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0060.478B.37D0
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/6
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 00D0.FF24.5512
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/7
+ switchport access vlan 40
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0090.21BC.937E
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/8
+ switchport access vlan 50
+ switchport mode access
+!
+interface FastEthernet0/9
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/10
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/11
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/12
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/13
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/14
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/15
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/16
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/17
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/18
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/19
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/20
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/21
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/22
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/23
+ description UNUSED
+ shutdown
+!
+interface FastEthernet0/24
+ description UNUSED
+ shutdown
+!
+interface GigabitEthernet0/1
+ switchport trunk allowed vlan 10,20,30,40,50,60
+ switchport mode trunk
+!
+interface GigabitEthernet0/2
+ switchport trunk allowed vlan 10,20,30,40,50,60
+ switchport mode trunk
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan60
+ ip address 192.168.60.2 255.255.255.0
+!
+ip default-gateway 192.168.60.1
+access-list 99 permit host 192.168.60.10
+line con 0
+!
+line vty 0 4
+ access-class 99 in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+line vty 5 15
+ access-class 99 in
+ exec-timeout 5 0
+ login local
+ transport input ssh
+!
+end

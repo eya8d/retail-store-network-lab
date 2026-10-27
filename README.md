@@ -81,6 +81,19 @@ The internal server intentionally does not answer POS/Warehouse ping requests un
 
 **Port security:** replacing an authorized endpoint triggered a violation. Recovery involved reconnecting the intended endpoint and re-enabling the interface.
 
+## Documentation and configuration files
+
+| Folder | Contents |
+|---|---|
+| [docs/](docs/) | Address plan, topology, policy, rebuild guide and troubleshooting |
+| [configs/](configs/) | Configuration guide explaining historical exports versus fresh-build templates |
+| [configs/observed/](configs/observed/) | Sanitized configuration snapshots supplied before cleanup |
+| [configs/build/](configs/build/) | Corrected templates for fresh matching devices; includes optional management hardening |
+| [evidence/](evidence/) | Original build/test screenshots and an evidence index |
+| [tests/](tests/) | Acceptance checklist and historical evidence register |
+
+The **observed** files preserve earlier mistakes for troubleshooting context. The **build** files are authored templates, not a new export from the uploaded simulation; their optional credential/console settings have not been confirmed applied to the `.pkt`. See [configuration notes](configs/README.md) and [lab credentials](docs/LAB-CREDENTIALS.md).
+
 ## Useful verification commands
 
 Run the commands relevant to each device:

@@ -1,0 +1,46 @@
+! CORRECTED FRESH-BUILD TEMPLATE — NOT A VERIFIED DEVICE EXPORT.
+! Use on a new matching device/topology; do not paste over the existing lab.
+! Public demonstration credentials: see docs/LAB-CREDENTIALS.md.
+! Port-security MACs learn from the newly attached intended devices.
+enable
+configure terminal
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+hostname ISP
+no ip domain-lookup
+username netadmin privilege 15 secret RetailLab2026!
+enable secret RetailEnable2026!
+ip cef
+no ipv6 cef
+spanning-tree mode pvst
+interface GigabitEthernet0/0
+ no shutdown
+ ip address 203.0.113.1 255.255.255.252
+ duplex auto
+ speed auto
+interface GigabitEthernet0/1
+ no shutdown
+ ip address 198.51.100.1 255.255.255.0
+ duplex auto
+ speed auto
+interface GigabitEthernet0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+interface Vlan1
+ no ip address
+ shutdown
+ip classless
+ip flow-export version 9
+line con 0
+ login local
+ exec-timeout 5 0
+line aux 0
+line vty 0 4
+ transport input none
+ login
+end
+! Generate RSA keys separately on R1/SW1/SW2; see docs/REBUILD.md.
+! Verify and generate endpoint traffic before saving startup config.
