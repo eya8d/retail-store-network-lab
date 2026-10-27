@@ -1,27 +1,58 @@
 # Troubleshooting journal
 
-## Incident 1 — Office could SSH to SW2
+## Office could SSH to SW2
 
-- Symptom: an Office PC established an SSH session to SW2 despite the Admin-only requirement.
-- Evidence: historical SW2 VTY output had access-class only under `line vty 15`; ranges 0–4 and 5–14 lacked it.
-- Cause: selecting a single line rather than all intended lines.
-- Fix: apply login local, SSH-only transport and ACL99 under `line vty 0 15`.
-- Subsequent evidence: Office SSH rejection screenshots; final supplied exports contain ACL99 on ranges 0–4 and 5–15 of both switches.
-- Final acceptance: new SSH sessions succeed from Admin-01 and fail from Office on all three store devices.
+I expected only Admin-01 to be able to log in, but an Office PC reached the SW2 prompt.
 
-## Incident 2 — Warehouse received no DNS
+I checked the source ACL first. It allowed the correct address, `192.168.60.10`. Then I checked:
 
-- Symptom: a Warehouse PC received 192.168.30.x and gateway .30.1, but DNS was 0.0.0.0.
-- Cause: DNS was added under differently spelled pool names rather than the pool containing network 192.168.30.0/24.
-- Resolution: update **WEARHOUSE** and renew the endpoint lease. The supplied final router export includes DNS under the working pool. Extra pools still remain in the supplied export and have proposed removals.
-- Acceptance: both Warehouse clients receive DNS 192.168.40.10 and open portal.retail.test.
+```text
+show running-config | section line vty
+```
 
-## Exercise — Port security
+The restriction was only under `line vty 15`. The other lines weren't covered.
 
-Historical evidence showed Secure-up with the intended sticky MAC, followed by Secure-shutdown after a different device transmitted. Restore the original endpoint before shutdown/no shutdown. Final static exports contain sticky bindings, but the running status/counters still require evidence.
+I applied the settings under `line vty 0 15` and started new SSH sessions from both devices. Office was rejected, and Admin-01 could log in.
 
-## Controlled extra exercise — Missing VLAN on trunk
+![Office SSH attempts rejected](../evidence/office-ssh-denied.png)
 
-Do this only in a separate copy of the working `.pkt`. Capture baseline portal access first. On SW1's inter-switch uplink G0/2, remove VLAN30 from the allowed list. Test a Warehouse client's gateway and portal; inspect access VLAN, trunk allowlist, and interface state to locate the fault. Restore VLAN30 on that same trunk and repeat tests. Revert the experiment entirely before final release.
+## Warehouse got an address but no DNS
 
-For every future incident record: date, symptom, affected scope, hypothesis, diagnostic commands, actual root cause, minimal fix, before/after evidence, and prevention. Do not mark an exercise completed until you execute it.
+The Warehouse PC received `192.168.30.21` and the right gateway, but DNS stayed at `0.0.0.0`.
+
+The DHCP configuration showed several similar names. The network and gateway were in `WEARHOUSE`, while I'd added DNS to a differently spelled pool.
+
+I added DNS to the pool actually serving VLAN30, then ran:
+
+```text
+ipconfig /release
+ipconfig /renew
+```
+
+After that, the Warehouse PCs could open the portal by name. I later removed the unused pools.
+
+![DHCP pool spelling mismatch](../evidence/warehouse-dhcp-name-incident.png)
+
+## Testing port security
+
+I let SW1 Fa0/1 learn the MAC of pos-01, then connected a different PC and sent traffic. The violation counter increased and the port entered Secure-shutdown.
+
+![Port-security violation](../evidence/port-security-violation.png)
+
+To recover it, I reconnected pos-01 and used:
+
+```text
+configure terminal
+interface fastEthernet 0/1
+ shutdown
+ no shutdown
+end
+```
+
+I kept the sticky MAC entry because the original PC was still the intended device.
+
+## Exercise I'd like to try next
+
+In a separate copy, remove VLAN30 from the inter-switch trunk, diagnose why Warehouse loses access, and restore it.
+
+I haven't completed that exercise yet. I'd record the symptom, commands used, cause, fix and the result after recovery.

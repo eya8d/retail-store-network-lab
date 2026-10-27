@@ -1,22 +1,23 @@
-# Portfolio presentation
+# Sharing the project
 
-The repository already contains Retail-Store-Network.pkt and the final full topology image at its root. The main README links the simulation and embeds the topology.
+Repository: https://github.com/eya8d/retail-store-network-lab
 
-## Suggested GitHub description
+Suggested description:
 
-Cisco Packet Tracer retail network lab with VLANs, DHCP/DNS, PAT, ACLs, SSH and switch port security.
+> A retail store network I built in Cisco Packet Tracer to practise VLANs, routing, DHCP/DNS, PAT, ACLs and switch security.
 
-Suggested topics: networking, cisco, packet-tracer, ccna, vlan, acl, network-security, homelab.
+Suggested topics:
 
-## Suggested LinkedIn images
+`networking`, `cisco`, `packet-tracer`, `ccna`, `vlan`, `network-security`, `homelab`
 
-1. evidence/topology-final.png — the actual full store topology.
-2. evidence/pat-office-and-guests.png — Office and Guest translations sharing one WAN address.
-3. evidence/port-security-violation.png — caption as a controlled test.
-4. evidence/office-ssh-denied.png — rejected Office remote-login attempts.
+## Images for a project post
 
-Explain the retail scenario, selected design choices, one troubleshooting lesson, and link https://github.com/eya8d/retail-store-network-lab. Describe it as an educational simulation. Do not claim multiple branches, OSPF, redundancy, a stateful firewall, production deployment or payment compliance.
+I'd lead with [the topology](topology.png), followed by the [PAT table](../evidence/pat-office-and-guests.png) and [port-security test](../evidence/port-security-violation.png).
 
-## Useful remaining documentation improvements
+The useful story is the retail requirement, what I configured, and a problem I had to diagnose. The VTY-range error and the Warehouse DNS issue are both examples from this build.
 
-Record the actual Packet Tracer version, add fresh sanitized exports after cleanup, and complete the final acceptance table with actual observations. Historical screenshots and authored templates are labeled separately. No LinkedIn post has been sent by this documentation task.
+## Release
+
+The first release should attach `Retail-Store-Network.pkt` so someone can download the lab directly. The [release notes](RELEASE-NOTES.md) describe the current scope.
+
+I still want to add the exact Packet Tracer version and fresh configuration exports after cleanup.

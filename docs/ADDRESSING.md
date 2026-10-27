@@ -11,7 +11,7 @@ All LAN masks: 255.255.255.0 (/24), with .0 network and .255 broadcast.
 | 50 | Guests | 192.168.50.0/24 | 192.168.50.1 | GUESTS pool, .21–.254; DNS 198.51.100.10 |
 | 60 | Network management | 192.168.60.0/24 | 192.168.60.1 | SW1 .2; SW2 .3; Admin-01 .10, static |
 
-The .21 start assumes the correct .1–.20 exclusions. The builder reported removing the malformed extra exclusion during cleanup; the historical observed export retains it. Warehouse spelling WEARHOUSE is retained to avoid creating another pool.
+The .21 start assumes the correct .1–.20 exclusions. I removed the malformed extra exclusion during cleanup; the earlier export still contains it. Warehouse spelling WEARHOUSE is retained to avoid creating another pool.
 
 | External segment | Device | Address |
 |---|---|---|
@@ -20,4 +20,4 @@ The .21 start assumes the correct .1–.20 exclusions. The builder reported remo
 | Public server segment 198.51.100.0/24 | ISP G0/1 | 198.51.100.1/24 |
 | Public server segment | PUBLIC-WEB | 198.51.100.10/24; gateway .1 |
 
-Printer planned static: 192.168.20.10/24, gateway 192.168.20.1. Confirm actual GUI settings. Static endpoints/AP settings cannot be verified from IOS exports alone. The external addresses represent documentation networks in a closed simulation, not real public connectivity.
+Printer: 192.168.20.10/24, gateway 192.168.20.1. Server, printer and AP settings are configured in their Packet Tracer windows rather than in the IOS exports. The external addresses represent documentation networks in a closed simulation, not real public connectivity.

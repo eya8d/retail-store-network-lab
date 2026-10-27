@@ -1,119 +1,92 @@
 # Retail Store Network Lab
 
-A Cisco Packet Tracer project by **Eyad Ahmed Gaafar**, built to practice designing, configuring, securing, and troubleshooting a retail store network.
+I built this network in Cisco Packet Tracer to practise the networking topics I'd studied in a setting with clear requirements: a retail store with six checkout PCs, an office, a warehouse, an internal server and guest Wi-Fi.
 
-The lab connects checkout terminals, office staff, warehouse PCs, internal services, guest Wi-Fi, and a dedicated network administrator. An ISP router and external server simulate internet access entirely inside Packet Tracer.
+My aim was to make the right services reachable from each department, then check that traffic which should be blocked really was blocked.
 
-## Network topology
+![Retail store topology](docs/topology.png)
 
-![Retail store network topology](Screenshot%202026-10-28%20003924.png)
+## Try the lab
 
-## Download and run
+Download [Retail-Store-Network.pkt](Retail-Store-Network.pkt) and open it in Cisco Packet Tracer. Give the links a moment to come up.
 
-1. [Download the Packet Tracer project](Retail-Store-Network.pkt) using GitHub's **Download raw file** button.
-2. Open it in Cisco Packet Tracer.
-3. Allow links and network services to converge.
-4. Use the tests below to explore allowed and blocked traffic.
+- From a POS or Warehouse PC, open `http://portal.retail.test`.
+- From an Office PC or Guest laptop, open `http://www.public.test`.
+- From a Guest laptop, try `http://192.168.40.10`. It should be blocked.
+- From an Office PC, try SSH to `192.168.60.3`. Then repeat from Admin-01 with the lab account.
 
-The project file and topology image are included in this repository. Router configuration exports identify Cisco 2911 devices with IOS 15.1; switches are 2960-24TT devices with exported IOS 15.0. The exact Packet Tracer application version has not been recorded, so cross-version compatibility is not guaranteed.
+The ISP and public website are simulated inside Packet Tracer. They don't connect to the real internet.
 
-## VLAN and addressing plan
+## How I split the network
 
-All LANs use a /24 mask (`255.255.255.0`).
-
-| VLAN | Department | Network | Default gateway |
+| VLAN | Department | Subnet | Gateway |
 |---|---|---|---|
-| 10 | Checkout / POS | 192.168.10.0/24 | 192.168.10.1 |
+| 10 | POS / checkout | 192.168.10.0/24 | 192.168.10.1 |
 | 20 | Office | 192.168.20.0/24 | 192.168.20.1 |
 | 30 | Warehouse | 192.168.30.0/24 | 192.168.30.1 |
-| 40 | Internal servers | 192.168.40.0/24 | 192.168.40.1 |
+| 40 | Servers | 192.168.40.0/24 | 192.168.40.1 |
 | 50 | Guest Wi-Fi | 192.168.50.0/24 | 192.168.50.1 |
 | 60 | Network management | 192.168.60.0/24 | 192.168.60.1 |
 
-| Infrastructure | Address |
+I used /24 networks to keep the addressing easy to follow while working on VLANs and access rules. It's more space than this store needs; using VLSM would be a useful follow-up.
+
+Two 2960 switches connect the store devices. A 2911 router handles inter-VLAN routing through 802.1Q subinterfaces. A second 2911 represents the ISP.
+
+## What I configured
+
+DHCP supplies addresses to POS, Office, Warehouse and Guests. The internal server provides DNS and an HTTP page representing the store portal. Guests use a separate simulated external DNS server.
+
+Office and Guest traffic uses PAT to share `203.0.113.2`. POS and Warehouse can reach DNS and HTTP on the internal server, but can't browse the external site or access the other departments through the router.
+
+I restricted SSH on the store router and switches to Admin-01. On wired endpoint ports, I added sticky MAC port security, PortFast and BPDU Guard, and disabled unused ports.
+
+The [address plan](docs/ADDRESSING.md), [port map](docs/TOPOLOGY.md) and [access rules](docs/POLICY.md) have the details.
+
+## Problems I ran into
+
+**Office could still log in to SW2.** I'd applied the source ACL to VTY15 rather than the full range. Checking the running configuration made the mistake clear. I applied the settings to all the configured VTY lines, then repeated the allowed and denied SSH tests.
+
+**Warehouse PCs received an IP but no DNS.** I had several differently spelled DHCP pool names. The DNS setting was in a different pool from the one serving VLAN30. I corrected the working pool and renewed the leases. I kept the original spelling, `WEARHOUSE`, while cleaning up the unused pools.
+
+**A different PC shut down a checkout port.** This was my port-security test: learn the intended MAC, connect a different endpoint and send traffic. The port entered Secure-shutdown. I reconnected the original PC and used shutdown/no shutdown to recover it.
+
+I've kept the [troubleshooting notes](docs/TROUBLESHOOTING.md) and [screenshots](evidence/README.md) alongside the project.
+
+## Checks I used
+
+| Check | Expected result |
 |---|---|
-| Internal HTTP/DNS server | 192.168.40.10 |
-| Office printer | 192.168.20.10 |
-| SW1 management | 192.168.60.2 |
-| SW2 management | 192.168.60.3 |
-| Admin-01 | 192.168.60.10 |
-| Store WAN interface | 203.0.113.2/30 |
-| ISP WAN interface | 203.0.113.1/30 |
-| ISP external-server interface | 198.51.100.1/24 |
-| External HTTP/DNS server | 198.51.100.10 |
+| POS / Warehouse → internal portal by name | Opens |
+| Office / Guest → external website by name | Opens |
+| Guest → internal server | Blocked |
+| POS / Warehouse → Office printer | Blocked |
+| Office → Office printer | Reachable |
+| Admin-01 → store device SSH | Allowed |
+| Office → store device SSH | Blocked |
+| Different MAC on secured POS port | Port shuts down |
 
-DHCP serves POS, Office, Warehouse, and Guests. Addresses .1 through .20 are reserved from dynamic allocation in each of those networks. Infrastructure uses static addresses.
+The screenshots cover the tests I captured during the build. After the cleanup I also repeated Warehouse portal access, Guest external browsing and Guest access blocking. The [test checklist](tests/validation.csv) is there for a full repeat run; I haven't filled every row.
 
-## Configuration features
+A failed ping to the internal server from POS or Warehouse is expected: their ACLs allow DNS and HTTP, not ICMP echo to the server.
 
-- **VLANs and trunks:** six VLANs with 802.1Q trunks between switches and the store router.
-- **Inter-VLAN routing:** router-on-a-stick using one subinterface per VLAN.
-- **DHCP and DNS:** automatic client addressing and name resolution for internal and simulated external web services.
-- **NAT/PAT:** Office and Guest clients share the store WAN address using overload.
-- **Extended ACLs:** POS and Warehouse can access internal DNS and HTTP; other routed traffic is denied except explicit DHCP/ICMP allowances.
-- **Guest separation:** guest traffic to private routed destinations is blocked, with exceptions for DHCP and pinging its own gateway.
-- **SSH:** store router and switch remote login is restricted to Admin-01 using a VTY access list.
-- **Switch protection:** sticky MAC port security, PortFast, BPDU Guard, and shutdown of unused ports.
+## Finding your way around
 
-## Services and validation
+- [configs/observed/](configs/observed/) — my earlier configuration exports, with password hashes removed.
+- [configs/build/](configs/build/) — cleaned configurations for rebuilding on fresh devices. These include extra management settings; see the [configuration notes](configs/README.md) before using them.
+- [docs/](docs/) — addressing, topology, access rules and rebuild notes.
+- [evidence/](evidence/) — screenshots of services, ACL tests, PAT and port security.
+- [tests/](tests/) — the test checklist and screenshot register.
 
-| Source | Test | Expected result |
-|---|---|---|
-| POS, Office, Warehouse | Open `http://portal.retail.test` | Internal portal opens |
-| Office and Guests | Open `http://www.public.test` | Simulated external site opens |
-| Guests | Open `http://192.168.40.10` | Blocked |
-| POS and Warehouse | Ping office printer | Blocked |
-| Office | Ping office printer | Allowed |
-| Admin-01 | SSH to 192.168.60.1, .2, and .3 | Allowed with valid lab credentials |
-| Office | SSH to those management addresses | Blocked |
-| Guest client | Renew DHCP lease | Receives guest subnet, gateway, and external DNS |
-| Unauthorized endpoint on secured POS port | Send traffic using a different MAC | Port-security shutdown |
+For a rebuild, start with [REBUILD.md](docs/REBUILD.md). The router exports show IOS 15.1 and the switch exports show IOS 15.0. I still need to record the exact Packet Tracer application version.
 
-Tests demonstrated during the build included internal/external HTTP and DNS, DHCP, PAT translations, SSH source restrictions, guest blocking, and a controlled port-security violation. After cleanup, the builder confirmed Warehouse portal access, Guest external web access, and blocked Guest access to the internal server. This is a learning-lab record, not an independent automated test report.
+## What I'd improve next
 
-The internal server intentionally does not answer POS/Warehouse ping requests under the configured ACLs; test its permitted services using the browser instead.
+I'd like to add a second branch, use OSPF between sites, and test redundant uplinks with EtherChannel.
 
-## Troubleshooting lessons
+For now, this is a single-store lab. The ACLs are stateless and don't isolate hosts within the same VLAN. There is no stateful edge firewall or link redundancy. The portal is a test page rather than a sales application.
 
-**VTY range mismatch:** an access list was initially applied only to VTY15. Inspecting all VTY ranges revealed why an Office PC could still log in. Applying the source restriction across all configured VTY ranges corrected the access policy.
+## License
 
-**Warehouse DNS:** differently spelled DHCP pool names created separate pools. The pool actually serving VLAN30 needed the DNS setting. Correcting that pool and renewing leases restored name resolution.
+The lab files and documentation are available under the [MIT License](LICENSE).
 
-**Port security:** replacing an authorized endpoint triggered a violation. Recovery involved reconnecting the intended endpoint and re-enabling the interface.
-
-## Documentation and configuration files
-
-| Folder | Contents |
-|---|---|
-| [docs/](docs/) | Address plan, topology, policy, rebuild guide and troubleshooting |
-| [configs/](configs/) | Configuration guide explaining historical exports versus fresh-build templates |
-| [configs/observed/](configs/observed/) | Sanitized configuration snapshots supplied before cleanup |
-| [configs/build/](configs/build/) | Corrected templates for fresh matching devices; includes optional management hardening |
-| [evidence/](evidence/) | Original build/test screenshots and an evidence index |
-| [tests/](tests/) | Acceptance checklist and historical evidence register |
-
-The **observed** files preserve earlier mistakes for troubleshooting context. The **build** files are authored templates, not a new export from the uploaded simulation; their optional credential/console settings have not been confirmed applied to the `.pkt`. See [configuration notes](configs/README.md) and [lab credentials](docs/LAB-CREDENTIALS.md).
-
-## Useful verification commands
-
-Run the commands relevant to each device:
-
-```text
-show vlan brief
-show interfaces trunk
-show ip interface brief
-show ip route
-show ip dhcp binding
-show access-lists
-show ip nat translations
-show port-security
-show port-security address
-```
-
-## Scope and future improvements
-
-This is a **single-store educational simulation**, with HTTP pages representing business services. It does not implement a real sales application or payment processing.
-
-Router ACLs are directional and stateless. They do not filter traffic between hosts in the same VLAN. Office, Server, and Management networks do not have complete destination allowlists. PAT is not a stateful firewall. No redundancy or payment-security compliance is claimed.
-
-Future extensions could include a second branch, OSPF, redundant uplinks, EtherChannel, and stronger endpoint isolation.
+— Eyad Ahmed Gaafar

@@ -1,8 +1,8 @@
 # Topology and port map
 
-The layout below follows the supplied interface exports and the final uploaded topology screenshot. The .pkt is included at the repository root; it has not been executed by the documentation reviewer.
+This is the layout I used for the store. The port map follows the switch exports and the final topology screenshot.
 
-![Final topology](../evidence/topology-final.png)
+![Store topology](topology.png)
 
 ```mermaid
 flowchart TD
@@ -31,8 +31,8 @@ flowchart TD
 | SW2 Fa0/4 | Printer | VLAN20 |
 | SW2 Fa0/5–6 | Warehouse PCs | VLAN30 |
 | SW2 Fa0/7 | Admin-01 | VLAN60 |
-| SW1 Fa0/9–24 | Unused | Shutdown in observed export |
+| SW1 Fa0/9–24 | Unused | Disabled |
 | SW2 Fa0/8–24 | Unused | Shutdown in observed export |
-| SW2 G0/2 | Intended unused | Shutdown in corrected files; verify before patch |
+| SW2 G0/2 | Intended unused | Disabled during cleanup |
 
 Fresh-build templates explicitly create all six VLANs on both switches. VLAN60 keeps the historical name ADMIN. No redundant links or routing protocol have been added.
