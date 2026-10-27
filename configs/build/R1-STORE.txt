@@ -1,6 +1,6 @@
 ! CORRECTED FRESH-BUILD TEMPLATE — NOT A VERIFIED DEVICE EXPORT.
 ! Use on a new matching device/topology; do not paste over the existing lab.
-! Public demonstration credentials: see docs/LAB-CREDENTIALS.md.
+! Replace password placeholders locally before use: see docs/LAB-CREDENTIALS.md.
 ! Port-security MACs learn from the newly attached intended devices.
 enable
 configure terminal
@@ -9,8 +9,8 @@ no service timestamps debug datetime msec
 service password-encryption
 hostname R1-STORE
 no ip domain-lookup
-username netadmin privilege 15 secret RetailLab2026!
-enable secret RetailEnable2026!
+username netadmin privilege 15 secret YOUR_LAB_LOGIN_PASSWORD
+enable secret YOUR_LAB_ENABLE_SECRET
 ip dhcp excluded-address 192.168.10.1 192.168.10.20
 ip dhcp excluded-address 192.168.20.1 192.168.20.20
 ip dhcp excluded-address 192.168.30.1 192.168.30.20

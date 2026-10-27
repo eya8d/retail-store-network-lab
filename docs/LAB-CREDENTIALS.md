@@ -1,15 +1,14 @@
-# Rebuild credentials
+# Lab login
 
-The fresh-build configurations use these public demonstration credentials:
+The administrator username is `netadmin`.
 
-| Setting | Value |
-|---|---|
-| Username | netadmin |
-| Login password | RetailLab2026! |
-| Enable secret | RetailEnable2026! |
+Set the login password and enable secret locally. The rebuild files use these placeholders:
 
-Use them only in this lab. They describe the build templates, not a checked list of credentials inside the uploaded .pkt.
+- `YOUR_LAB_LOGIN_PASSWORD` — replace with your local login password.
+- `YOUR_LAB_ENABLE_SECRET` — replace with your local enable secret.
 
-I set the rebuild account to privilege 15 and enabled local console login. SSH on the store devices is still restricted to Admin-01. ISP remote login is disabled in the build files.
+Replace the placeholders before pasting the configurations into Packet Tracer.
 
-When rebuilding, test a new login before closing your direct CLI session. You can choose different lab passwords if you prefer.
+Use the login password for SSH or local-account authentication. If a session starts at the `>` prompt, enter `enable` and use the locally configured enable secret. The rebuild account is configured at privilege 15 and can start directly at `#`.
+
+SSH to the store router and switches is restricted to Admin-01. The previous example password values have been removed because they do not match Eyad's current setup.
